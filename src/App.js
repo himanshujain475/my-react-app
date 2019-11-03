@@ -1,21 +1,23 @@
-import React, { useState } from "react";
-import Button from './Button'
-import request from 'request'
+import React, { useState, useEffect } from "react";
+import Button from "./Button";
+import request from "request";
 
 function App() {
   // Declare a new state variable, which we'll call "count"
-  const [count, setCount] = useState(0);
-  request
-  .get('https://my-json-server.typicode.com/typicode/demo/posts')
-  .on('response', function(response) {
-    console.log(response.toJSON())
-  })
+  const [posts, setPosts] = useState([]);
+  useEffect(() => {
+    request(
+      "https://my-json-server.typicode.com/typicode/demo/posts",
+      (error, response, body) => {
+        setPosts(body)
+      }
+    );
+  });
+
   return (
     <div>
-      <p>
-        You clicked {count} times
-      </p>
-      <Button txt="Click me" setCount={setCount} count={count} />
+      <p> {posts} </p>
+      {/* <Button txt="Click me" setCount={setPosts} /> */}
     </div>
   );
 }
